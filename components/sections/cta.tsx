@@ -3,6 +3,7 @@ import Section from 'components/section'
 import { buttonVariants } from 'components/ui/button'
 import { cn } from 'lib/utils'
 import Link from 'next/link'
+import {SignInButton} from "@clerk/nextjs"
 
 export default function CtaSection() {
    return (
@@ -13,16 +14,16 @@ export default function CtaSection() {
          className="rounded-xl bg-primary/10 py-16"
       >
          <div className="flex w-full flex-col items-center justify-center space-y-4 pt-4 sm:flex-row sm:space-x-4 sm:space-y-0">
-            <Link
-               href="/signup"
+            <button
                className={cn(
                   buttonVariants({ variant: 'default' }),
                   'flex w-full gap-2 text-background sm:w-auto',
                )}
-            >
+               >
                <Icons.logo className="size-6" />
                Get started for free
-            </Link>
+            </button>
+
          </div>
       </Section>
    )

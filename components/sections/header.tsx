@@ -8,9 +8,14 @@ import { siteConfig } from 'lib/config'
 import { cn } from 'lib/utils'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
+import {SignInButton, UserButton, SignOutButton, useAuth, useUser} from "@clerk/nextjs"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '../ui/dropdown-menu'
+import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar"
+
 
 export default function Header() {
    const [addBorder, setAddBorder] = useState(false)
+   const { isSignedIn,user, } = useUser()
 
    useEffect(() => {
       const handleScroll = () => {
@@ -50,13 +55,37 @@ export default function Header() {
                   </nav>
 
                   <div className="flex gap-2">
-                     <Link
-                        href="/login"
+                     {!isSignedIn && (
+                     <SignInButton>
+                     <button
                         className={buttonVariants({ variant: 'outline' })}
                      >
                         Login
-                     </Link>
+                     </button>
+                    </SignInButton>
+                     )}
+                     {!!isSignedIn && (
+                     <DropdownMenu>
+                        <DropdownMenuTrigger>
+                           <Avatar>
+  <AvatarImage src={user?.imageUrl} />
+  <AvatarFallback>{user?.fullName?.slice(0,2)}</AvatarFallback>
+</Avatar>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent>
+                           <DropdownMenuItem>
+                              <Link href="/playground">Playground</Link>
+                           </DropdownMenuItem>
+                           <DropdownMenuItem>
+                              <SignOutButton>
+                             <h1>Signout</h1>
+                              </SignOutButton>
+                           </DropdownMenuItem>
+                        </DropdownMenuContent>
+                     </DropdownMenu>
+                     )}
                     
+              
                   </div>
                </div>
             </div>

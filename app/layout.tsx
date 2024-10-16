@@ -4,6 +4,7 @@ import { ThemeProvider } from '~/components/theme-provider'
 import { ThemeToggle } from '~/components/theme-toggle'
 import { cn, constructMetadata } from '~/lib/utils'
 import '~/styles/globals.css'
+import ClientProvider from './provider'
 
 export const metadata: Metadata = constructMetadata({})
 
@@ -21,6 +22,9 @@ export default function RootLayout({
    children: React.ReactNode
 }>) {
    return (
+   <ClientProvider>
+
+
       <html lang="en" suppressHydrationWarning>
          <head>
             <link rel="preconnect" href="https://rsms.me/" />
@@ -30,17 +34,18 @@ export default function RootLayout({
             className={cn(
                'mx-auto min-h-screen w-full scroll-smooth bg-background antialiased',
             )}
-         >
+            >
             <ThemeProvider
                attribute="class"
                defaultTheme="dark"
                enableSystem={false}
-            >
+               >
                {children}
                <ThemeToggle />
                <TailwindIndicator />
             </ThemeProvider>
          </body>
       </html>
+                  </ClientProvider>
    )
 }
