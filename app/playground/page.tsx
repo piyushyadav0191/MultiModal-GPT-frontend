@@ -1,8 +1,11 @@
 import React from 'react'
+import Chat from './_includes/Chat'
 
 const PlaygroundPage = () => {
   return (
-    <div>PlaygroundPage</div>
+    <div>
+      <Chat />
+    </div>
   )
 }
 
