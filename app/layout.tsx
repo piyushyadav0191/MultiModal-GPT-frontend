@@ -3,6 +3,7 @@ import { TailwindIndicator } from "~/components/tailwind-indicator";
 import { ThemeProvider } from "~/components/theme-provider";
 import { ThemeToggle } from "~/components/theme-toggle";
 import "~/styles/globals.css";
+import { Toaster} from "sonner";
 import ClientProvider from "./provider";
 
 export const viewport: Viewport = {
@@ -31,6 +32,7 @@ export default function RootLayout({
             defaultTheme="dark"
             enableSystem={false}
           >
+            <Toaster />
             {children}
             <ThemeToggle />
             <TailwindIndicator />

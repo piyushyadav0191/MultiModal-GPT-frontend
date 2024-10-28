@@ -1,8 +1,6 @@
+"use client"
+
 import React from "react";
-
-// import { ChatRequestOptions } from "ai";
-// import { Message } from "ai/react";
-
 import ChatBottombar from "./chat-bottombar";
 import ChatList from "./chat-lists";
 import { ChatOptions } from "./chat-options";
@@ -11,12 +9,12 @@ import ChatTopbar from "./chat-topbar";
 export interface ChatProps {
   chatId?: string;
   setChatId: React.Dispatch<React.SetStateAction<string>>;
-  messages?: any[];
+  messages: any[];
   input?: string;
-  handleInputChange?: () => void;
-  handleSubmit?: () => void;
+  handleInputChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void; // Updated type
+  handleSubmit: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
   isLoading: boolean;
-  error?: undefined | Error;
+  error?: string;
   stop: () => void;
 }
 
@@ -39,28 +37,24 @@ export default function Chat({
   setChatId,
 }: ChatProps & ChatTopbarProps) {
   return (
-    <div className="flex flex-col justify-between w-full h-full  ">
+    <div className="flex flex-col justify-between w-full h-full">
       <ChatTopbar
-        chatOptions={{
-          selectedModel: "gpt-3",
-          temperature: 1,
-          systemPrompt: "Tell me a story"
-        }}
+        chatOptions={chatOptions} // Use passed chatOptions
         setChatOptions={setChatOptions}
         isLoading={isLoading}
         chatId={chatId}
         setChatId={setChatId}
-        messages={[]}
+        messages={messages}
       />
 
-      <ChatList messages={[]} isLoading={isLoading} />
+      <ChatList messages={messages} isLoading={isLoading} />
 
       <ChatBottombar
         selectedModel={chatOptions.selectedModel}
-        input={"hello"}
-        handleInputChange={() => {}}
-        handleSubmit={() => {}}
-        isLoading={false}
+        input={input || ""} 
+        handleInputChange={handleInputChange}
+        handleSubmit={handleSubmit}
+        isLoading={isLoading}
         stop={stop}
       />
     </div>

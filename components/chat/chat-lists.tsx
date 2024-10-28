@@ -1,12 +1,14 @@
+"use client";
+
 import React, { useEffect, useRef } from "react";
-
 import Image from "next/image";
-
-// import OllamaLogo from "../../../public/ollama.png";
 import CodeDisplayBlock from "../code-display-block";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-// import { Message } from "ai";
+import { Avatar, AvatarImage } from "../ui/avatar";
+import { useUser } from "@clerk/nextjs";
+import { toast } from "sonner";
+import { Copy } from "lucide-react";
 
 interface ChatListProps {
   messages: any[];
@@ -14,15 +16,17 @@ interface ChatListProps {
 }
 
 const MessageToolbar = () => (
-  <div className="mt-1 flex gap-3 empty:hidden juice:flex-row-reverse">
-    <div className="text-gray-400 flex self-end lg:self-center items-center justify-center lg:justify-start mt-0 -ml-1 h-7 gap-[2px] invisible">
+  <div className="mt-1 flex gap-3 juice:flex-row-reverse">
+    <div className="text-gray-400 flex self-end lg:self-center items-center justify-center lg:justify-start mt-0 -ml-1 h-7 gap-[2px]">
       <span>Regenerate</span>
       <span>Edit</span>
     </div>
   </div>
 );
 
+
 export default function ChatList({ messages, isLoading }: ChatListProps) {
+  const { user } = useUser();
   const bottomRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -30,11 +34,9 @@ export default function ChatList({ messages, isLoading }: ChatListProps) {
   };
 
   useEffect(() => {
-    if (isLoading) {
-      return;
+    if (!isLoading) {
+      scrollToBottom();
     }
-    // if user scrolls up, disable auto-scroll
-    scrollToBottom();
   }, [messages, isLoading]);
 
   if (messages.length === 0) {
@@ -74,12 +76,16 @@ export default function ChatList({ messages, isLoading }: ChatListProps) {
                   <div className="pt-0.5">
                     <div className="gizmo-shadow-stroke flex h-6 w-6 items-center justify-center overflow-hidden rounded-full">
                       {message.role === "user" ? (
-                        <div className="dark:invert h-full w-full bg-black" />
+                        <Avatar>
+                          <AvatarImage src={user?.imageUrl} />
+                        </Avatar>
                       ) : (
                         <Image
                           src={"/ollama.png"}
                           alt="AI"
                           className="object-contain dark:invert aspect-square h-full w-full"
+                          width={60}
+                          height={60}
                         />
                       )}
                     </div>
@@ -91,7 +97,6 @@ export default function ChatList({ messages, isLoading }: ChatListProps) {
                     <div className="flex-col gap-1 md:gap-3">
                       {message.content}
                     </div>
-                    <MessageToolbar />
                   </div>
                 )}
                 {message.role === "assistant" && (
@@ -100,23 +105,33 @@ export default function ChatList({ messages, isLoading }: ChatListProps) {
                     <div className="flex-col gap-1 md:gap-3">
                       <span className="whitespace-pre-wrap">
                         {/* Check if the message content contains a code block */}
-                        {message.content.split("```").map((part, index) => {
-                          if (index % 2 === 0) {
-                            return (
-                              <Markdown key={index} remarkPlugins={[remarkGfm]}>
-                                {part}
-                              </Markdown>
-                            );
-                          } else {
-                            return (
-                              <CodeDisplayBlock
-                                key={index}
-                                code={part.trim()}
-                                lang=""
-                              />
-                            );
-                          }
-                        })}
+                        {message.content
+                          .split("```")
+                          .map((part: string, index: number) => {
+                            if (index % 2 === 0) {
+                              return (
+                                <Markdown
+                                  key={index}
+                                  remarkPlugins={[remarkGfm]}
+                                >
+                                  {part}
+                                </Markdown>
+                              );
+                            } else {
+                              return (
+                                <div
+                                  key={index}
+                                  className="border rounded relative "
+                                >
+                                  {/* Add the CopyButton inside the code block */}
+                                  <CodeDisplayBlock
+                                    code={part.trim()}
+                                    lang=""
+                                  />
+                                </div>
+                              );
+                            }
+                          })}
                         {isLoading &&
                           messages.indexOf(message) === messages.length - 1 && (
                             <span className="animate-pulse" aria-label="Typing">
@@ -125,6 +140,7 @@ export default function ChatList({ messages, isLoading }: ChatListProps) {
                           )}
                       </span>
                     </div>
+
                     <MessageToolbar />
                   </div>
                 )}
@@ -132,6 +148,7 @@ export default function ChatList({ messages, isLoading }: ChatListProps) {
             </div>
           ))}
       </div>
+      {/* Anchor for scrolling */}
       <div id="anchor" ref={bottomRef}></div>
     </div>
   );

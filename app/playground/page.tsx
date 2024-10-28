@@ -1,12 +1,12 @@
-import React from 'react'
-import Chat from './_includes/Chat'
+"use client";
+
+import React from "react";
+import ChatPage from "~/components/chat/chat-page";
+
 
 const PlaygroundPage = () => {
-  return (
-    <div>
-      <Chat />
-    </div>
-  )
-}
+  const [chatId, setChatId] = React.useState<string>("");
+  return <ChatPage chatId={chatId} setChatId={setChatId} />;
+};
 
-export default PlaygroundPage
+export default PlaygroundPage;
