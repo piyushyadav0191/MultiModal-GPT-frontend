@@ -1,4 +1,3 @@
-/* eslint-disable regexp/no-super-linear-backtracking */
 import fs from 'fs'
 import path from 'path'
 import { siteConfig } from 'lib/config'

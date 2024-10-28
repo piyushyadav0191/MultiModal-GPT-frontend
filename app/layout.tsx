@@ -1,8 +1,7 @@
-import type { Metadata, Viewport } from "next";
+import type {  Viewport } from "next";
 import { TailwindIndicator } from "~/components/tailwind-indicator";
 import { ThemeProvider } from "~/components/theme-provider";
 import { ThemeToggle } from "~/components/theme-toggle";
-import { cn } from "~/lib/utils";
 import "~/styles/globals.css";
 import ClientProvider from "./provider";
 
