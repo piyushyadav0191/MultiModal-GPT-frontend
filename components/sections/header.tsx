@@ -45,7 +45,7 @@ export default function Header() {
   }, []);
 
   return (
-    <header className="relative sticky top-0 z-50 bg-background/60 py-2 backdrop-blur">
+    <header className=" sticky top-0 z-50 bg-background/60 py-2 backdrop-blur">
       <div className="container flex items-center justify-between">
         <Link
           href="/"
@@ -63,10 +63,6 @@ export default function Header() {
             </nav>
 
             {!isSignedIn && (
-              // <SignInButton />
-              //   <button className={buttonVariants({ variant: "outline" })}>
-              //     Sign In
-              //   </button>
               <SignedOut>
                 <SignInButton />
               </SignedOut>

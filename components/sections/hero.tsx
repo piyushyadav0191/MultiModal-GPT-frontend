@@ -55,7 +55,7 @@ function HeroTitles() {
                staggerChildren: 0.2,
             }}
          >
-            {['AI-Powered', 'Penetration', 'Testing', 'Platform'].map((text, index) => (
+            {['AI-Powered', 'MultiBot', 'Platform'].map((text, index) => (
                <motion.span
                   key={index}
                   className="inline-block text-balance px-1 font-semibold md:px-2"
