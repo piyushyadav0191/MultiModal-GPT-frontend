@@ -1,15 +1,9 @@
-"use client";
-
-import React from "react";
-import ChatPage from "~/components/chat/chat-page";
-import PlaygroundGrid from "~/components/playground-grid";
+import PlaygroundGrid from "~/components/playground-grid-v1";
 
 const PlaygroundPage = () => {
-  const [chatId, setChatId] = React.useState<string>("");
   return (
     <>
-      {/* <ChatPage chatId={chatId} setChatId={setChatId} /> */}
-      <PlaygroundGrid />
+    <PlaygroundGrid />
     </>
   );
 };
